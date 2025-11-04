@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Prisma
+prisma/.env
+prisma/migrations/
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
+
+# NPM
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Test / Coverage
+coverage/
+.nyc_output/
