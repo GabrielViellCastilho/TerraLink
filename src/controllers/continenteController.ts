@@ -12,103 +12,128 @@ export class ContinenteController {
 
   addContinente = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método addContinente");
+
       const continente = CreateContinenteSchema.parse(req.body);
+      console.log("[CONTROLLER] - Dados validados com sucesso:", continente);
 
       const response = await this.continenteService.addContinente(continente);
 
+      console.log("[CONTROLLER] - Continente criado com sucesso:", response);
       return res.status(201).json(response);
     } catch (error) {
-      return next(error)
+      console.error("[CONTROLLER] - Erro ao adicionar continente:", error);
+      return next(error);
     }
   };
-  
+
   addPaisAoContinente = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método addPaisAoContinente");
 
-      const data = AddPaisAoContinente.parse(req.body)
-
+      const data = AddPaisAoContinente.parse(req.body);
+      console.log("[CONTROLLER] - Dados validados com sucesso:", data);
 
       const response = await this.continenteService.addPaisAoContinente(
         data.continenteId,
         data.paisId
       );
 
+      console.log("[CONTROLLER] - País adicionado ao continente com sucesso:", response);
       return res.status(200).json(response);
-    } catch (error: any) {
-      console.error(error);
-      return next(error)
+    } catch (error) {
+      console.error("[CONTROLLER] - Erro ao adicionar país ao continente:", error);
+      return next(error);
     }
   };
 
   getAllContinentes = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método getAllContinentes");
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
+      console.log(`[CONTROLLER] - Parâmetros de paginação => page: ${page}, limit: ${limit}`);
 
       const response = await this.continenteService.getAllContinentes(page, limit);
+
+      console.log("[CONTROLLER] - Lista de continentes retornada com sucesso");
       return res.status(200).json(response);
-    } catch (error: any) {
-      console.error(error);
-      return next(error)
+    } catch (error) {
+      console.error("[CONTROLLER] - Erro ao listar continentes:", error);
+      return next(error);
     }
   };
 
   getContinenteById = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método getContinenteById");
 
-      if (!req.params.id){
-        throw new AppError("Informe o ID do continente",400);
+      if (!req.params.id) {
+        throw new AppError("Informe o ID do continente", 400);
       }
 
       const id = parseInt(req.params.id);
-      if (isNaN(id)) throw new AppError("ID inválido",400);
+      if (isNaN(id)) throw new AppError("ID inválido", 400);
+      console.log("[CONTROLLER] - ID do continente recebido:", id);
 
       const response = await this.continenteService.getContinenteById(id);
-      if (!response) throw new AppError("Continente não encontrado",404)
+      if (!response) throw new AppError("Continente não encontrado", 404);
 
+      console.log("[CONTROLLER] - Continente encontrado:", response);
       return res.status(200).json(response);
-    } catch (error: any) {
-      console.error(error);
-      return next(error)
+    } catch (error) {
+      console.error("[CONTROLLER] - Erro ao buscar continente por ID:", error);
+      return next(error);
     }
   };
 
   updateContinente = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método updateContinente");
 
-      if (!req.params.id){
-        throw new AppError("Informe o ID do continente",400);
+      if (!req.params.id) {
+        throw new AppError("Informe o ID do continente", 400);
       }
-      
+
       const id = parseInt(req.params.id);
-      if (isNaN(id)) throw new AppError("ID inválido",400);
+      if (isNaN(id)) throw new AppError("ID inválido", 400);
+      console.log("[CONTROLLER] - ID do continente recebido:", id);
 
       const data = UpdateContinenteSchema.parse(req.body);
+      console.log("[CONTROLLER] - Dados validados com sucesso:", data);
+
       const response = await this.continenteService.updateContinente(id, data);
 
+      console.log("[CONTROLLER] - Continente atualizado com sucesso:", response);
       return res.status(200).json(response);
-    } catch (error: any) {
-      console.error(error);
-      return next(error)
+    } catch (error) {
+      console.error("[CONTROLLER] - Erro ao atualizar continente:", error);
+      return next(error);
     }
   };
 
   deleteContinente = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("[CONTROLLER] - Iniciando método deleteContinente");
 
-      if (!req.params.id){
-        throw new AppError("Informe o ID do continente",400);
+      if (!req.params.id) {
+        throw new AppError("Informe o ID do continente", 400);
       }
 
       const id = parseInt(req.params.id);
-      if (isNaN(id)) throw new AppError("ID inválido",400);
+      if (isNaN(id)) throw new AppError("ID inválido", 400);
+      console.log("[CONTROLLER] - ID do continente recebido:", id);
 
       const response = await this.continenteService.deleteContinente(id);
+
+      console.log("[CONTROLLER] - Continente deletado com sucesso:", response);
       return res.status(200).json({ message: "Continente deletado com sucesso", response });
-    } catch (error: any) {
-      console.error(error);
-      return next(error)
+    } catch (error) {
+      console.error("[CONTROLLER] - Erro ao deletar continente:", error);
+      return next(error);
     }
   };
+
 }
 
