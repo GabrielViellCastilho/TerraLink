@@ -9,15 +9,19 @@ const app: Application = express();
 
 app.use(helmet());
 app.use(cors());
-app.use(express.json()); // parse JSON
+app.use(express.json());
 
 var continenteService = new ContinenteService()
 var continenteController = new ContinenteController(continenteService)
 
 // Rotas
 
-
-app.post("/createContinente",continenteController.addContinente)
+app.get("/continentes", continenteController.getAllContinentes);
+app.get("/continente/:id", continenteController.getContinenteById);
+app.post("/createContinente",continenteController.addContinente);
+app.post("/addPais", continenteController.addPaisAoContinente);
+app.put("/continente/:id", continenteController.updateContinente);
+app.delete("/continente/:id", continenteController.deleteContinente);
 
 
 // Middleware de erro
