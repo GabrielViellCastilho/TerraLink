@@ -11,7 +11,7 @@ model Continente {
   id        Int      @id @default(autoincrement())
   nome      String   @db.VarChar(255)
   descricao String   @db.VarChar(255)
-  paises    Pais[]
+  paises    Pais[] 
 }
 
 model Pais {
@@ -21,8 +21,8 @@ model Pais {
   idioma_oficial  String      @db.VarChar(100)
   moeda           String      @db.VarChar(100)
   id_continente   Int         @db.Integer
-  continente      Continente  @relation(fields: [id_continente], references: [id])
-  cidades         Cidade[]
+  continente      Continente  @relation(fields: [id_continente], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cidades         Cidade[] 
 }
 
 model Cidade {
@@ -32,5 +32,5 @@ model Cidade {
   latitude  Float   @db.DoublePrecision
   longitude Float   @db.DoublePrecision
   id_pais   Int     @db.Integer
-  pais      Pais    @relation(fields: [id_pais], references: [id])
+  pais      Pais    @relation(fields: [id_pais], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
