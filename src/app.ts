@@ -3,8 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import errorHandler from "./middlewares/errorHandler";
 
-import continenteRoutes from "./routes/contitenRoutes";
+import continenteRoutes from "./routes/continenteRoutes";
 import paisRoutes from "./routes/paisRoutes";
+import cidadeRoutes from "./routes/cidadeRoutes"
 
 const app: Application = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Rotas principais
 app.use(continenteRoutes);
 app.use(paisRoutes);
+app.use(cidadeRoutes);
 
 // Middleware global de erro
 app.use(errorHandler);
