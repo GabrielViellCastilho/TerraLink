@@ -1,3 +1,5 @@
+import type { Continente } from "./continenteTypes";
+
 export interface CountryData {
   name: string | null;
   cca2: string | null;
@@ -15,14 +17,6 @@ export interface Currency {
   name?: string;
 }
 
-
-export interface ContinenteInfo {
-  id: number;
-  nome: string;
-  descricao: string;
-}
-
-
 export interface Pais {
   id: number;
   nome: string;
@@ -33,7 +27,7 @@ export interface Pais {
   url_bandeira?: string | null;
   pib_per_capita?: number | null;
   inflacao?: number | null;
-  continente: ContinenteInfo;
+  continente: Continente;
 }
 
 

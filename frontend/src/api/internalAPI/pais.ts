@@ -21,6 +21,7 @@ export async function createPais(data: CreatePaisDTO) {
 export interface PaisesFilters {
   id_continente?: number;
   idioma_oficial?: string;
+  id?: number;
 }
 
 export async function getAllPaises(

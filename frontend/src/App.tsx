@@ -4,6 +4,7 @@ import NotFound from "./pages/NotFound";
 import Continent from "./pages/Continent";
 import Register from "./pages/Register";
 import Country from "./pages/Country";
+import City from "./pages/City";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
 
         <Route path="/country" element={<Country />} />
 
+        <Route path="/city" element={<City/>}/>
 
         <Route path="/register" element={<Register/>}/>
 
