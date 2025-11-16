@@ -5,37 +5,71 @@ import { CreatePaisSchema, UpdatePaisSchema } from "../schemas/paisSchema";
 
 export class PaisService {
 
-  async addPais(data: CreatePaisSchema) {
-    try {
-      // Verifica se o continente informado existe
-      const continente = await prisma.continente.findUnique({
-        where: { id: data.id_continente },
-      });
+    async addPais(data: CreatePaisSchema) {
+      try {
+        // Verifica se o continente informado existe
+        const continente = await prisma.continente.findUnique({
+          where: { id: data.id_continente },
+        });
 
-      if (!continente) {
-        logger.warn(`[Service] Continente com ID ${data.id_continente} não encontrado ao tentar criar país.`);
-        throw new AppError(`Continente com ID ${data.id_continente} não encontrado`, 404);
+        if (!continente) {
+          logger.warn(`[Service] Continente com ID ${data.id_continente} não encontrado ao tentar criar país.`);
+          throw new AppError(`Continente com ID ${data.id_continente} não encontrado`, 404);
+        }
+
+        const response = await prisma.pais.create({
+          data: {
+            nome: data.nome,
+            populacao: data.populacao,
+            idioma_oficial: data.idioma_oficial,
+            moeda: data.moeda,
+            id_continente: data.id_continente,
+            url_bandeira: data.url_bandeira ?? null,
+            pib_per_capita: data.pib_per_capita ?? null,
+            inflacao: data.inflacao ?? null,
+          },
+          include: { continente: true },
+        });
+
+        logger.info(`País criado com sucesso: ${response.nome} (ID: ${response.id})`);
+        return response;
+
+      } catch (error: any) {
+        logger.error(`[Service] Erro ao criar país: ${error.message}`);
+        throw error;
       }
-
-      const response = await prisma.pais.create({
-        data: {
-          nome: data.nome,
-          populacao: data.populacao,
-          idioma_oficial: data.idioma_oficial,
-          moeda: data.moeda,
-          id_continente: data.id_continente,
-        },
-        include: { continente: true },
-      });
-
-      logger.info(`País criado com sucesso: ${response.nome} (ID: ${response.id})`);
-      return response;
-
-    } catch (error: any) {
-      logger.error(`[Service] Erro ao criar país: ${error.message}`);
-      throw error;
     }
-  }
+
+    async updatePais(id: number, data: UpdatePaisSchema) {
+      try {
+        const response = await prisma.pais.update({
+          where: { id },
+          data: {
+            nome: data.nome,
+            populacao: data.populacao,
+            idioma_oficial: data.idioma_oficial,
+            moeda: data.moeda,
+            id_continente: data.id_continente,
+            url_bandeira: data.url_bandeira ?? null,
+            pib_per_capita: data.pib_per_capita ?? null,
+            inflacao: data.inflacao ?? null,
+          },
+        });
+
+        logger.info(`País atualizado com sucesso: ${response.nome} (ID: ${response.id})`);
+        return response;
+
+      } catch (error: any) {
+        if (error.code === "P2025") {
+          logger.warn(`[Service] Nenhum país encontrado com ID ${id} para atualização.`);
+          throw new AppError(`País com ID ${id} não encontrado`, 404);
+        }
+
+        logger.error(`[Service] Erro ao atualizar país ID ${id}: ${error.message}`);
+        throw error;
+      }
+    }
+
 
   async getAllPaises(page: number = 1, limit: number = 10) {
     const skip = (page - 1) * limit;
@@ -88,33 +122,6 @@ export class PaisService {
 
     } catch (error: any) {
       logger.error(`[Service] Erro ao buscar país ID ${id}: ${error.message}`);
-      throw error;
-    }
-  }
-
-  async updatePais(id: number, data: UpdatePaisSchema) {
-    try {
-      const response = await prisma.pais.update({
-        where: { id },
-        data: {
-          nome: data.nome,
-          populacao: data.populacao,
-          idioma_oficial: data.idioma_oficial,
-          moeda: data.moeda,
-          id_continente: data.id_continente,
-        },
-      });
-
-      logger.info(`País atualizado com sucesso: ${response.nome} (ID: ${response.id})`);
-      return response;
-
-    } catch (error: any) {
-      if (error.code === "P2025") {
-        logger.warn(`[Service] Nenhum país encontrado com ID ${id} para atualização.`);
-        throw new AppError(`País com ID ${id} não encontrado`, 404);
-      }
-
-      logger.error(`[Service] Erro ao atualizar país ID ${id}: ${error.message}`);
       throw error;
     }
   }

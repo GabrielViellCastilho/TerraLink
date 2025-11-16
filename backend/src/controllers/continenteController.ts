@@ -16,7 +16,7 @@ export class ContinenteController {
       logger.info("[CONTROLLER] - Iniciando método addContinente");
 
       const continente = CreateContinenteSchema.parse(req.body);
-      logger.log("[CONTROLLER] - Dados validados com sucesso:", continente);
+      logger.info("[CONTROLLER] - Dados validados com sucesso:", continente);
 
       const response = await this.continenteService.addContinente(continente);
 
@@ -27,6 +27,32 @@ export class ContinenteController {
       return next(error);
     }
   };
+
+  getOrCreateContinent = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      logger.info("[CONTROLLER] - Iniciando método getOrCreateContinent");
+
+      
+      const { name } = req.body;
+      if (!name || typeof name !== "string") {
+        logger.warn("[CONTROLLER] - Nome do continente inválido:", req.body);
+        return res.status(400).json({ message: "Invalid continent name" });
+      }
+
+      logger.info("[CONTROLLER] - Nome do continente recebido:", name);
+
+      
+      const continentId = await this.continenteService.getOrCreateContinentId(name);
+
+      logger.info(`[CONTROLLER] - Continente processado com sucesso: ${name} (ID: ${continentId})`);
+      return res.status(200).json({ id: continentId });
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao processar continente:", error);
+      return next(error);
+    }
+  };
+
 
   addPaisAoContinente = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -1,3 +1,5 @@
+import type { CountryData, Currency } from "../../types/paisTypes";
+
 export async function getInflationByCountry(countryCode: string): Promise<number | null> {
   try {
     // "cca2": "JP" ultilizar esse campo
@@ -61,22 +63,7 @@ export async function getGdpPerCapitaByCountry(countryCode: string): Promise<num
   }
 }
 
-interface CountryData {
-  name: string | null;
-  cca2: string | null;
-  currencySymbol: string | null;
-  subregion: string | null;
-  language: string | null;
-  population: number | null;
-  flagUrl: string | null;
-  gdpPerCapita: number | null;
-  inflation: number | null;
-}
 
-interface Currency {
-  symbol?: string;
-  name?: string;
-}
 
 export async function getCountryData(countryName: string): Promise<CountryData | null> {
   try {

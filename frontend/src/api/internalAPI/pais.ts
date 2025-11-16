@@ -1,16 +1,23 @@
-import apiClient from "../apiClient";
+import type { CreatePaisDTO } from "../../schemas/paisSchemas";
 
-export interface AddPaisRequest {
-  continenteId: number;
-  paisId: number;
+
+export async function createPais(data: CreatePaisDTO) {
+  const response = await fetch("http://localhost:3000/createPais", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => null);
+    throw new Error(err?.message || "Failed to create country");
+  }
+
+  return response.json();
 }
 
-export async function addPaisAoContinente(data: AddPaisRequest) {
-  try {
-    const response = await apiClient.post("/addPais", data);
-    return response.data;
-  } catch (error: any) {
-    console.error("Erro ao adicionar país ao continente:", error);
-    throw error;
-  }
+export async function getAllCountries() {
+  const response = await fetch("http://localhost:3000/paises");
+  if (!response.ok) throw new Error("Failed to fetch countries");
+  return response.json();
 }

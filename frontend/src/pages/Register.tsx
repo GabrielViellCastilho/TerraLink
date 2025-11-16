@@ -1,4 +1,5 @@
 import CreateContinenteForm from "../components/AddContinentForm";
+import CreatePaisForm from "../components/AddPaisForm";
 import Sidebar from "../components/Sidebar";
 
 
@@ -13,6 +14,8 @@ export default function Register() {
 
                 <div className="p-6">
                     <CreateContinenteForm/>
+                    <br />
+                    <CreatePaisForm/>
                 </div>
 
         </main>

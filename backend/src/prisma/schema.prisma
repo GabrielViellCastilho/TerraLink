@@ -22,8 +22,12 @@ model Pais {
   moeda           String      @db.VarChar(100)
   id_continente   Int         @db.Integer
   continente      Continente  @relation(fields: [id_continente], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  cidades         Cidade[] 
+  cidades         Cidade[]
+  url_bandeira    String?     @db.VarChar(255)
+  pib_per_capita  Float?      @db.DoublePrecision
+  inflacao        Float?      @db.DoublePrecision
 }
+
 
 model Cidade {
   id        Int     @id @default(autoincrement())

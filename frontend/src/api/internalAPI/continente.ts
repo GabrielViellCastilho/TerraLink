@@ -74,3 +74,25 @@ export async function getContinenteById(id: number) {
     throw error;
   }
 }
+
+export async function getOrCreateContinentId(name: string): Promise<number> {
+  try {
+    const response = await fetch("http://localhost:3000/getOrCreateContinent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar/criar continente: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.id;
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message || "Erro ao acessar o backend");
+  }
+}

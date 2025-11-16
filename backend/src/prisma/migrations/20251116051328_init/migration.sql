@@ -15,6 +15,9 @@ CREATE TABLE "Pais" (
     "idioma_oficial" VARCHAR(100) NOT NULL,
     "moeda" VARCHAR(100) NOT NULL,
     "id_continente" INTEGER NOT NULL,
+    "url_bandeira" VARCHAR(255),
+    "pib_per_capita" DOUBLE PRECISION,
+    "inflacao" DOUBLE PRECISION,
 
     CONSTRAINT "Pais_pkey" PRIMARY KEY ("id")
 );

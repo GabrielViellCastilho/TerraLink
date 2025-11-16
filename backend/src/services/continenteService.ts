@@ -51,6 +51,34 @@ export class ContinenteService{
     }
   }
 
+async getOrCreateContinentId(nome: string){
+    try {
+      const existing = await prisma.continente.findFirst({
+        where: { nome },
+      });
+
+      if (existing) {
+        logger.info(`Continente encontrado: ${existing.nome} (ID: ${existing.id})`);
+        return existing.id;
+      }
+
+      const created = await prisma.continente.create({
+        data: {
+          nome: nome,
+          descricao: `Continent created automatically for ${nome}`,
+          paises: { connect: [] },
+        },
+      });
+
+      logger.info(`Continente criado com sucesso: ${created.nome} (ID: ${created.id})`);
+      return created.id;
+
+    } catch (error: any) {
+      logger.error(`[Service] Erro ao criar ou buscar continente: ${error.message}`);
+      throw error;
+    }
+  }
+
   async getAllContinentes(page: number = 1, limit: number = 10) {
     const skip = (page - 1) * limit;
 

@@ -2,10 +2,11 @@ import { Building2, Globe, Map, UserPlus } from "lucide-react";
 import { CardsGrid } from "../components/Card";
 import Sidebar from "../components/Sidebar";
 import { BarChart } from "../components/BarChart";
+import { getCountryData } from "../api/externalAPI/worldBank";
 
 
 export default function Home() {
-  
+  console.log(getCountryData("brazil"))
   return (
     <div>
       <Sidebar>
