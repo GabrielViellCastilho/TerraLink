@@ -18,8 +18,33 @@ export async function createPais(data: CreatePaisDTO) {
 }
 
 
-export async function getAllPaises(page: number, limit: number): Promise<PaisesResponse> {
-  const url = `http://localhost:3000/paises?page=${page}&limit=${limit}`;
+export interface PaisesFilters {
+  id_continente?: number;
+  idioma_oficial?: string;
+}
+
+export async function getAllPaises(
+  page: number,
+  limit: number,
+  filters?: PaisesFilters
+): Promise<PaisesResponse> {
+
+  let url = `http://localhost:3000/paises?page=${page}&limit=${limit}`;
+
+
+  if (filters) {
+    const queryParams = new URLSearchParams();
+    if (filters.id_continente !== undefined) {
+      queryParams.append("id_continente", String(filters.id_continente));
+    }
+    if (filters.idioma_oficial) {
+      queryParams.append("idioma_oficial", filters.idioma_oficial);
+    }
+    const queryString = queryParams.toString();
+    if (queryString) {
+      url += `&${queryString}`;
+    }
+  }
 
   const res = await fetch(url);
 

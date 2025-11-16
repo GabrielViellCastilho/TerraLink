@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { getAllPaises } from "../api/internalAPI/pais";
+import { getAllContinentes } from "../api/internalAPI/continente";
 import type { Pais } from "../types/paisTypes";
+import type { Continente } from "../types/continenteTypes";
 
 interface PaisTableProps {
   onUpdate: (id: number) => void;
@@ -10,14 +12,32 @@ interface PaisTableProps {
 
 export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
   const [paises, setPaises] = useState<Pais[]>([]);
+  const [continentes, setContinentes] = useState<Continente[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedContinent, setSelectedContinent] = useState<number | "">("");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
   const ITEMS_PER_PAGE = 7;
 
-  const loadData = async () => {
+  // Carrega continentes para o filtro
+  const loadContinentes = async () => {
     try {
-      const response = await getAllPaises(page, ITEMS_PER_PAGE);
+      const response = await getAllContinentes(1, 100); // pega todos
+      setContinentes(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar continentes:", error);
+    }
+  };
+
+  // Carrega países com filtros
+  const loadPaises = async () => {
+    try {
+      const filters: any = {};
+      if (selectedContinent) filters.id_continente = selectedContinent;
+      if (selectedLanguage) filters.idioma_oficial = selectedLanguage;
+
+      const response = await getAllPaises(page, ITEMS_PER_PAGE, filters);
       setPaises(response.data);
       setTotalPages(response.totalPages);
     } catch (error) {
@@ -26,11 +46,42 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
   };
 
   useEffect(() => {
-    loadData();
-  }, [page]);
+    loadContinentes();
+  }, []);
+
+  useEffect(() => {
+    loadPaises();
+  }, [page, selectedContinent, selectedLanguage]);
 
   return (
     <div className="w-full bg-white shadow rounded-xl p-4">
+      {/* FILTROS */}
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <select
+          className="border rounded p-2 w-full md:w-auto"
+          value={selectedContinent}
+          onChange={(e) =>
+            setSelectedContinent(e.target.value ? Number(e.target.value) : "")
+          }
+        >
+          <option value="">All Continents</option>
+          {continentes.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.nome}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="text"
+          placeholder="Filter by Language"
+          className="border rounded p-2 w-full md:w-auto"
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+        />
+      </div>
+
+
       <div className="overflow-x-auto">
         <table className="w-full border border-black">
           <thead className="bg-black text-white">
@@ -55,8 +106,6 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
                 className="border border-black odd:bg-white even:bg-gray-100"
               >
                 <td className="p-2 border border-black">{item.id}</td>
-
-                {/* Flag */}
                 <td className="p-2 border border-black">
                   {item.url_bandeira ? (
                     <img
@@ -68,19 +117,21 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
                     "No flag"
                   )}
                 </td>
-
                 <td className="p-2 border border-black">{item.nome}</td>
-                <td className="p-2 border border-black">{item.populacao.toLocaleString()}</td>
+                <td className="p-2 border border-black">
+                  {item.populacao.toLocaleString()}
+                </td>
                 <td className="p-2 border border-black">{item.idioma_oficial}</td>
                 <td className="p-2 border border-black">{item.moeda}</td>
                 <td className="p-2 border border-black">
                   {item.pib_per_capita?.toLocaleString() ?? "-"}
                 </td>
                 <td className="p-2 border border-black">
-                  {item.inflacao !== null && item.inflacao !== undefined ? item.inflacao.toFixed(2) : "-"}
+                  {item.inflacao !== null && item.inflacao !== undefined
+                    ? item.inflacao.toFixed(2)
+                    : "-"}
                 </td>
                 <td className="p-2 border border-black">{item.continente.nome}</td>
-
                 <td className="p-2 border border-black">
                   <div className="flex items-center justify-center gap-3">
                     <button
