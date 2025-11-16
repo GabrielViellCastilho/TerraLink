@@ -1,13 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Continent from "./pages/Continent";
+import Register from "./pages/Register";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Página inicial */}
+
         <Route path="/" element={<Home />} />
+
+        <Route path="/continent" element={<Continent />} />
+
+        <Route path="/register" element={<Register/>}/>
 
         
         {/* Página 404 */}

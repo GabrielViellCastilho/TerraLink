@@ -106,8 +106,8 @@ export const BarChart: React.FC<BarChartProps> = ({ data, title }) => {
   }, [data, title]);
 
   return (
-    <div className="w-full flex justify-center mt-6">
-      <div className="bg-white rounded-xl shadow p-4 max-w-lg w-full">
+    <div className="w-full flex justify-center mt-6 mb-5">
+      <div className="bg-white rounded-xl shadow p-3 max-w-lg w-full">
         <ReactApexChart
           options={chartData.options}
           series={chartData.series}

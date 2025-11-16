@@ -36,16 +36,26 @@ export default function Home() {
                 />
           </main>
 
-          <BarChart
-            title="Most Populated Countries"
-            data={[
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <BarChart
+              title="Most Populated Countries"
+              data={[
                 { name: "China", value: 1412000000 },
                 { name: "India", value: 1393000000 },
                 { name: "USA", value: 331000000 },
-                { name: "Brazil", value: 213000000 },
-                { name: "Indonesia", value: 276000000 },
-              ]} 
-          />
+              ]}
+            />
+
+            <BarChart
+              title="Most Populated Cities"
+              data={[
+                { name: "Tokyo", value: 37400068 },
+                { name: "Delhi", value: 28514000 },
+                { name: "Shanghai", value: 25582000 },
+              ]}
+            />
+          </div>
+
 
       </Sidebar>
     </div>
