@@ -26,38 +26,49 @@ export class CidadeService {
     }
   }
 
-  async getAllCidades(page: number = 1, limit: number = 10) {
-    const skip = (page - 1) * limit;
+  async getAllCidades(
+  page: number = 1,
+  limit: number = 10,
+  paisId?: number,
+  continenteId?: number
+) {
+  const skip = (page - 1) * limit;
 
-    try {
-      const [cidades, total] = await Promise.all([
-        prisma.cidade.findMany({
-          skip,
-          take: limit,
-          include: { pais: true },
-          orderBy: { id: "asc" },
-        }),
-        prisma.cidade.count(),
-      ]);
+  try {
+    const where: any = {};
+    if (paisId) where.id_pais = paisId;
+    if (continenteId) where.pais = { id_continente: continenteId };
 
-      logger.info(`Listando cidades - Página: ${page}, Total retornado: ${cidades.length} de ${total}`);
+    const [cidades, total] = await Promise.all([
+      prisma.cidade.findMany({
+        skip,
+        take: limit,
+        include: { pais: true },
+        where,
+        orderBy: { id: "asc" },
+      }),
+      prisma.cidade.count({ where }),
+    ]);
 
-      if (cidades.length === 0) {
-        logger.warn(`[Service] Nenhuma cidade encontrada na página ${page}`);
-      }
+    logger.info(`Listando cidades - Página: ${page}, Total retornado: ${cidades.length} de ${total}`);
 
-      return {
-        data: cidades,
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      };
-    } catch (error: any) {
-      logger.error(`[Service] Erro ao listar cidades: ${error.message}`);
-      throw error;
+    if (cidades.length === 0) {
+      logger.warn(`[Service] Nenhuma cidade encontrada na página ${page}`);
     }
+
+    return {
+      data: cidades,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  } catch (error: any) {
+    logger.error(`[Service] Erro ao listar cidades: ${error.message}`);
+    throw error;
   }
+}
+
 
   async getCidadeById(id: number) {
     try {
@@ -123,4 +134,18 @@ export class CidadeService {
       throw error;
     }
   }
+
+  async getCidadeCount() {
+    try {
+      const total = await prisma.cidade.count();
+
+      logger.info(`[Service] Total de cidades: ${total}`);
+
+      return { total };
+    } catch (error: any) {
+      logger.error(`[Service] Erro ao contar cidades: ${error.message}`);
+      throw error;
+    }
+  }
+
 }

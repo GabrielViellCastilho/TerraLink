@@ -96,3 +96,10 @@ export async function getOrCreateContinentId(name: string): Promise<number> {
     throw new Error(err.message || "Erro ao acessar o backend");
   }
 }
+
+
+export async function getContinenteCount() {
+  const res = await fetch(`http://localhost:3000/continentes/count`);
+  const data = await res.json();
+  return data.total;
+}

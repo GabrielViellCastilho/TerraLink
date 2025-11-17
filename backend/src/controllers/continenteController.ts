@@ -162,5 +162,21 @@ export class ContinenteController {
     }
   };
 
+    getContinenteCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req
+      logger.info("[CONTROLLER] - Contando continentes");
+
+      const result = await this.continenteService.getContinenteCount();
+
+      return res.status(200).json(result);
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao contar continentes:", error);
+      return next(error);
+    }
+  };
+
+
 }
 

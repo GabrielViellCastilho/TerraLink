@@ -12,5 +12,11 @@ router.get("/pais/:id", paisController.getPaisById);
 router.post("/createPais", paisController.addPais);
 router.put("/pais/:id", paisController.updatePais);
 router.delete("/pais/:id", paisController.deletePais);
+router.get("/paises/count", paisController.getPaisCount);
+router.get("/paises/top/pib", paisController.getTop5PibPerCapita);
+router.get("/paises/top/inflacao", paisController.getTop5Inflacao);
+router.get("/paises/populacao/total", paisController.getTotalPopulation);
+
+
 
 export default router;

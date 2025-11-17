@@ -12,5 +12,7 @@ router.get("/cidade/:id", cidadeController.getCidadeById);
 router.post("/createCidade", cidadeController.addCidade);
 router.put("/cidade/:id", cidadeController.updateCidade);
 router.delete("/cidade/:id", cidadeController.deleteCidade);
+router.get("/cidades/count", cidadeController.getCidadeCount);
+
 
 export default router;

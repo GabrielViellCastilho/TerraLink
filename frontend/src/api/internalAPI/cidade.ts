@@ -105,3 +105,9 @@ export async function getCidadeById(id: number): Promise<Cidade> {
     throw error;
   }
 }
+
+export async function getCidadeCount() {
+  const res = await fetch(`http://localhost:3000/cidades/count`);
+  const data = await res.json();
+  return data.total;
+}

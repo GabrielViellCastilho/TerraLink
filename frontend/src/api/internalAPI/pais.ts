@@ -111,3 +111,46 @@ export async function getPaisById(id: number): Promise<Pais> {
     throw error;
   }
 }
+
+export async function getPaisCount(): Promise<number> {
+  const res = await fetch("http://localhost:3000/paises/count");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch country count");
+  }
+
+  const data = await res.json();
+  return data.total;
+}
+
+export async function getTop5PibPerCapita() {
+  const res = await fetch("http://localhost:3000/paises/top/pib");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch top 5 GDP per capita countries");
+  }
+
+  return res.json();
+}
+
+
+export async function getTop5Inflacao() {
+  const res = await fetch("http://localhost:3000/paises/top/inflacao");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch top 5 inflation countries");
+  }
+
+  return res.json();
+}
+
+export async function getTotalWorldPopulation() {
+  const res = await fetch("http://localhost:3000/paises/populacao/total");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch total world population");
+  }
+
+  const data = await res.json();
+  return data.total;
+}

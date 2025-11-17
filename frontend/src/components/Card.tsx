@@ -32,10 +32,11 @@ interface CardsGridProps {
 
 export function CardsGrid({ cards }: CardsGridProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full justify-center place-items-center">
       {cards.map((card, index) => (
         <KpiCard key={index} title={card.title} value={card.value} icon={card.icon} />
       ))}
     </div>
   );
 }
+

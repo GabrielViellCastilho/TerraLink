@@ -28,23 +28,41 @@ export class PaisController {
     }
   };
 
+
+
   getAllPaises = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info("[CONTROLLER] - Iniciando método getAllPaises");
 
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
+
       logger.info(`[CONTROLLER] - Parâmetros de paginação => page: ${page}, limit: ${limit}`);
 
-      const response = await this.paisService.getAllPaises(page, limit);
+
+      const filters: { id_continente?: number; idioma_oficial?: string } = {};
+
+      if (req.query.id_continente) {
+        filters.id_continente = parseInt(req.query.id_continente as string);
+      }
+      if (req.query.idioma_oficial) {
+        filters.idioma_oficial = req.query.idioma_oficial as string;
+      }
+
+      logger.info(`[CONTROLLER] - Filtros aplicados => ${JSON.stringify(filters)}`);
+
+      const response = await this.paisService.getAllPaises(page, limit, filters);
 
       logger.info("[CONTROLLER] - Lista de países retornada com sucesso");
       return res.status(200).json(response);
+
     } catch (error) {
       logger.error("[CONTROLLER] - Erro ao listar países:", error);
       return next(error);
     }
   };
+
 
   getPaisById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -115,4 +133,65 @@ export class PaisController {
       return next(error);
     }
   };
+
+    getPaisCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req
+      logger.info("[CONTROLLER] - Contando países");
+
+      const result = await this.paisService.getPaisCount();
+
+      return res.status(200).json(result);
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao contar países:", error);
+      return next(error);
+    }
+  };
+
+  getTop5PibPerCapita = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req
+      logger.info("[CONTROLLER] - Buscando top 5 PIB per capita");
+
+      const result = await this.paisService.getTop5PibPerCapita();
+      return res.status(200).json(result);
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao buscar top PIB:", error);
+      return next(error);
+    }
+  };
+
+  getTop5Inflacao = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req
+      logger.info("[CONTROLLER] - Buscando top 5 inflação");
+
+      const result = await this.paisService.getTop5Inflacao();
+      return res.status(200).json(result);
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao buscar top inflação:", error);
+      return next(error);
+    }
+  };
+
+  getTotalPopulation = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    req
+    logger.info("[CONTROLLER] - Iniciando método getTotalPopulation");
+
+    const total = await this.paisService.getTotalPopulation();
+
+    logger.info(`[CONTROLLER] - População total retornada: ${total}`);
+
+    return res.status(200).json({ total });
+  } catch (error) {
+    logger.error("[CONTROLLER] - Erro ao obter população total:", error);
+    return next(error);
+  }
+  };
+
+
 }

@@ -15,5 +15,7 @@ router.post("/addPais", continenteController.addPaisAoContinente);
 router.put("/continente/:id", continenteController.updateContinente);
 router.delete("/continente/:id", continenteController.deleteContinente);
 router.post("/getOrCreateContinent", continenteController.getOrCreateContinent);
+router.get("/continentes/count", continenteController.getContinenteCount);
+
 
 export default router;

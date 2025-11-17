@@ -179,6 +179,20 @@ async getOrCreateContinentId(nome: string){
       throw error;
     }
   }
+
+    async getContinenteCount() {
+    try {
+      const total = await prisma.continente.count();
+
+      logger.info(`[Service] Total de continentes: ${total}`);
+
+      return { total };
+    } catch (error: any) {
+      logger.error(`[Service] Erro ao contar continentes: ${error.message}`);
+      throw error;
+    }
+  }
+
 }
 
 

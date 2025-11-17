@@ -34,9 +34,13 @@ export class CidadeController {
 
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
-      logger.info(`[CONTROLLER] - Parâmetros de paginação => page: ${page}, limit: ${limit}`);
 
-      const response = await this.cidadeService.getAllCidades(page, limit);
+      const paisId = req.query.paisId ? parseInt(req.query.paisId as string) : undefined;
+      const continenteId = req.query.continenteId ? parseInt(req.query.continenteId as string) : undefined;
+
+      logger.info(`[CONTROLLER] - Parâmetros => page: ${page}, limit: ${limit}, paisId: ${paisId}, continenteId: ${continenteId}`);
+
+      const response = await this.cidadeService.getAllCidades(page, limit, paisId, continenteId);
 
       logger.info("[CONTROLLER] - Lista de cidades retornada com sucesso");
       return res.status(200).json(response);
@@ -115,4 +119,20 @@ export class CidadeController {
       return next(error);
     }
   };
+
+  getCidadeCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req
+      logger.info("[CONTROLLER] - Contando cidades");
+
+      const result = await this.cidadeService.getCidadeCount();
+
+      return res.status(200).json(result);
+
+    } catch (error) {
+      logger.error("[CONTROLLER] - Erro ao contar cidades:", error);
+      return next(error);
+    }
+  };
+
 }
