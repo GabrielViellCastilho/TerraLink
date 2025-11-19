@@ -87,6 +87,7 @@ git clone https://github.com/GabrielViellCastilho/TerraLink.git
 ``` bash
 cd TerraLink
 cd backend
+npm install
 mv .env.template .env
 ```
 
@@ -100,10 +101,9 @@ npx prisma migrate dev
 npx prisma generate
 ```
 
-Instalar dependências e iniciar:
+Iniciar:
 
 ``` bash
-npm install
 npm run dev
 ```
 
