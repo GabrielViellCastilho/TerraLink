@@ -32,7 +32,7 @@ export const ContinenteTable: React.FC<ContinenteTableProps> = ({
       setContinentes(response.data);
       setTotalPages(response.totalPages);
     } catch (error) {
-      console.error("Erro ao carregar continentes:", error);
+      console.error("Error loading continents: ", error);
     }
   }
 

@@ -1,7 +1,6 @@
 import type { CreatePaisDTO, UpdatePaisDTO } from "../../schemas/paisSchemas";
 import type { Pais, PaisesResponse } from "../../types/paisTypes";
 
-
 export async function createPais(data: CreatePaisDTO) {
   const response = await fetch("http://localhost:3000/createPais", {
     method: "POST",
@@ -17,7 +16,6 @@ export async function createPais(data: CreatePaisDTO) {
   return response.json();
 }
 
-
 export interface PaisesFilters {
   id_continente?: number;
   idioma_oficial?: string;
@@ -31,7 +29,6 @@ export async function getAllPaises(
 ): Promise<PaisesResponse> {
 
   let url = `http://localhost:3000/paises?page=${page}&limit=${limit}`;
-
 
   if (filters) {
     const queryParams = new URLSearchParams();
@@ -62,7 +59,7 @@ export async function deletePais(id: number) {
   });
 
   if (!response.ok) {
-    throw new Error(`Erro ao deletar pais com ID ${id}`);
+    throw new Error(`Failed to delete country with ID ${id}`);
   }
 
   return response.json();
@@ -77,7 +74,7 @@ export async function updatePais(id: number, data: UpdatePaisDTO) {
 
   if (!response.ok) {
     const err = await response.json().catch(() => null);
-    throw new Error(err?.message || "Erro ao atualizar país");
+    throw new Error(err?.message || "Failed to update country");
   }
 
   return response.json();
@@ -89,7 +86,7 @@ export async function getPaisById(id: number): Promise<Pais> {
 
     if (!response.ok) {
       const err = await response.json().catch(() => null);
-      throw new Error(err?.message || "Erro ao buscar país");
+      throw new Error(err?.message || "Failed to fetch country");
     }
 
     const data = await response.json();
@@ -107,7 +104,7 @@ export async function getPaisById(id: number): Promise<Pais> {
       continente: data.continente,
     };
   } catch (error) {
-    console.error("Erro ao buscar país por ID:", error);
+    console.error("Error fetching country by ID:", error);
     throw error;
   }
 }
@@ -132,7 +129,6 @@ export async function getTop5PibPerCapita() {
 
   return res.json();
 }
-
 
 export async function getTop5Inflacao() {
   const res = await fetch("http://localhost:3000/paises/top/inflacao");

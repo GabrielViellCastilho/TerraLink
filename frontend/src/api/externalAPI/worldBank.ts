@@ -2,19 +2,16 @@ import type { CountryData, Currency } from "../../types/paisTypes";
 
 export async function getInflationByCountry(countryCode: string): Promise<number | null> {
   try {
-    // "cca2": "JP" ultilizar esse campo
-    
     const url = `https://api.worldbank.org/v2/country/${countryCode}/indicator/FP.CPI.TOTL.ZG?format=json&per_page=1`;
 
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.error("Erro ao buscar dados:", response.status);
+      console.error("Error fetching inflation data:", response.status);
       return null;
     }
 
     const json = await response.json();
-
 
     const dataList = json[1];
     if (!dataList || dataList.length === 0) return null;
@@ -23,11 +20,9 @@ export async function getInflationByCountry(countryCode: string): Promise<number
 
     if (value === null || value === undefined) return null;
 
-
     return Number(value.toFixed(2));
-
   } catch (error) {
-    console.error("Erro na requisição:", error);
+    console.error("Request error in getInflationByCountry:", error);
     return null;
   }
 }
@@ -44,26 +39,24 @@ export async function getGdpPerCapitaByCountry(countryCode: string): Promise<num
 
     const json = await response.json();
 
-
     const dataArray = json[1];
     if (!dataArray || dataArray.length === 0) {
+      console.error("No GDP per capita data found for this country.");
       return null;
     }
 
     const value = dataArray[0].value;
     if (value === null || value === undefined) {
+      console.error("GDP per capita value is null or undefined.");
       return null;
     }
 
-
     return Number((value as number).toFixed(2));
   } catch (error) {
-    console.error("Error in getGdpPerCapitaByCountry:", error);
+    console.error("Request error in getGdpPerCapitaByCountry:", error);
     return null;
   }
 }
-
-
 
 export async function getCountryData(countryName: string): Promise<CountryData | null> {
   try {
@@ -101,7 +94,9 @@ export async function getCountryData(countryName: string): Promise<CountryData |
     // GDP per capita
     let gdpPerCapita: number | null = null;
     if (cca2) {
-      const gdpRes = await fetch(`https://api.worldbank.org/v2/country/${cca2}/indicator/NY.GDP.PCAP.CD?format=json&per_page=1`);
+      const gdpRes = await fetch(
+        `https://api.worldbank.org/v2/country/${cca2}/indicator/NY.GDP.PCAP.CD?format=json&per_page=1`
+      );
       const gdpJson = await gdpRes.json();
       const gdpValue = gdpJson?.[1]?.[0]?.value ?? null;
       gdpPerCapita = gdpValue !== null ? Number(gdpValue.toFixed(2)) : null;
@@ -110,7 +105,9 @@ export async function getCountryData(countryName: string): Promise<CountryData |
     // Inflation
     let inflation: number | null = null;
     if (cca2) {
-      const inflationRes = await fetch(`https://api.worldbank.org/v2/country/${cca2}/indicator/FP.CPI.TOTL.ZG?format=json&per_page=1`);
+      const inflationRes = await fetch(
+        `https://api.worldbank.org/v2/country/${cca2}/indicator/FP.CPI.TOTL.ZG?format=json&per_page=1`
+      );
       const inflationJson = await inflationRes.json();
       const inflationValue = inflationJson?.[1]?.[0]?.value ?? null;
       inflation = inflationValue !== null ? Number(inflationValue.toFixed(2)) : null;
@@ -132,4 +129,3 @@ export async function getCountryData(countryName: string): Promise<CountryData |
     return null;
   }
 }
-

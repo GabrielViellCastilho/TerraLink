@@ -11,7 +11,7 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("Erro na requisição:", error);
+    console.error("Request error:", error);
     return Promise.reject(error);
   }
 );

@@ -21,11 +21,12 @@ export default function CreatePaisForm() {
   const [flagPreview, setFlagPreview] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<CreatePaisDTO & { continente_nome?: string }>();
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<CreatePaisDTO & { continente_nome?: string }>();
 
   const nomePais = watch("nome");
 
-  // Buscar dados do país
+  // Fetch country
   const fetchCountryData = async (nome: string) => {
     if (!nome) return;
 
@@ -60,18 +61,21 @@ export default function CreatePaisForm() {
     }
   };
 
-  // Validação manual
+  // Validation
   const validate = (data: CreatePaisDTO & { continente_nome?: string }) => {
     const errors: Record<string, string> = {};
-    if (!data.nome) errors.nome = "O nome do país é obrigatório";
-    if (!data.populacao || data.populacao <= 0) errors.populacao = "A população deve ser um número positivo";
-    if (!data.idioma_oficial) errors.idioma_oficial = "O idioma oficial é obrigatório";
-    if (!data.moeda) errors.moeda = "A moeda é obrigatória";
-    if (!data.continente_nome) errors.id_continente = "O continente é obrigatório";
+    if (!data.nome) errors.nome = "Country name is required";
+    if (!data.populacao || data.populacao <= 0)
+      errors.populacao = "Population must be a positive number";
+    if (!data.idioma_oficial)
+      errors.idioma_oficial = "Official language is required";
+    if (!data.moeda) errors.moeda = "Currency is required";
+    if (!data.continente_nome)
+      errors.id_continente = "Continent is required";
     return errors;
   };
 
-  // Submissão do formulário
+  // Submit
   const onSubmit = async (data: CreatePaisDTO & { continente_nome?: string }) => {
     const errors = validate(data);
     if (Object.keys(errors).length > 0) {
@@ -110,7 +114,9 @@ export default function CreatePaisForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-5 p-6 bg-white border border-gray-300 rounded-2xl shadow-md w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto"
     >
-      <h2 className="text-xl font-bold text-center text-black mb-3">Create New Country</h2>
+      <h2 className="text-xl font-bold text-center text-black mb-3">
+        Create New Country
+      </h2>
 
       {/* Country Name */}
       <div className="flex flex-col space-y-1">
@@ -138,7 +144,11 @@ export default function CreatePaisForm() {
       {/* Flag Preview */}
       {flagPreview && (
         <div className="flex justify-center">
-          <img src={flagPreview} alt="Country Flag" className="w-24 h-16 object-cover border rounded" />
+          <img
+            src={flagPreview}
+            alt="Country Flag"
+            className="w-24 h-16 object-cover border rounded"
+          />
         </div>
       )}
 
@@ -148,8 +158,11 @@ export default function CreatePaisForm() {
         <input
           {...register("idioma_oficial")}
           className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter official language"
         />
-        {formErrors.idioma_oficial && <p className="text-red-600 text-sm">{formErrors.idioma_oficial}</p>}
+        {formErrors.idioma_oficial && (
+          <p className="text-red-600 text-sm">{formErrors.idioma_oficial}</p>
+        )}
       </div>
 
       {/* Currency */}
@@ -158,8 +171,11 @@ export default function CreatePaisForm() {
         <input
           {...register("moeda")}
           className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter currency"
         />
-        {formErrors.moeda && <p className="text-red-600 text-sm">{formErrors.moeda}</p>}
+        {formErrors.moeda && (
+          <p className="text-red-600 text-sm">{formErrors.moeda}</p>
+        )}
       </div>
 
       {/* Population */}
@@ -169,8 +185,11 @@ export default function CreatePaisForm() {
           type="number"
           {...register("populacao", { valueAsNumber: true })}
           className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter population"
         />
-        {formErrors.populacao && <p className="text-red-600 text-sm">{formErrors.populacao}</p>}
+        {formErrors.populacao && (
+          <p className="text-red-600 text-sm">{formErrors.populacao}</p>
+        )}
       </div>
 
       {/* GDP per Capita */}
@@ -181,6 +200,7 @@ export default function CreatePaisForm() {
           step="0.01"
           {...register("pib_per_capita", { valueAsNumber: true })}
           className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter GDP per capita"
         />
       </div>
 
@@ -192,6 +212,7 @@ export default function CreatePaisForm() {
           step="0.01"
           {...register("inflacao", { valueAsNumber: true })}
           className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter inflation rate"
         />
       </div>
 

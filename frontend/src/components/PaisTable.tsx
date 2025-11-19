@@ -20,17 +20,17 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
 
   const ITEMS_PER_PAGE = 7;
 
-  // Carrega continentes para o filtro
+  // Load continents for filter
   const loadContinentes = async () => {
     try {
-      const response = await getAllContinentes(1, 100); // pega todos
+      const response = await getAllContinentes(1, 100);
       setContinentes(response.data);
     } catch (error) {
-      console.error("Erro ao carregar continentes:", error);
+      console.error("Failed to load continents:", error);
     }
   };
 
-  // Carrega países com filtros
+  // Load countries with filters
   const loadPaises = async () => {
     try {
       const filters: any = {};
@@ -41,7 +41,7 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
       setPaises(response.data);
       setTotalPages(response.totalPages);
     } catch (error) {
-      console.error("Erro ao carregar países:", error);
+      console.error("Failed to load countries:", error);
     }
   };
 
@@ -55,7 +55,7 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
 
   return (
     <div className="w-full bg-white shadow rounded-xl p-4">
-      {/* FILTROS */}
+      {/* FILTERS */}
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <select
           className="border rounded p-2 w-full md:w-auto"
@@ -80,7 +80,6 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
           onChange={(e) => setSelectedLanguage(e.target.value)}
         />
       </div>
-
 
       <div className="overflow-x-auto">
         <table className="w-full border border-black">
@@ -132,6 +131,7 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
                     : "-"}
                 </td>
                 <td className="p-2 border border-black">{item.continente.nome}</td>
+
                 <td className="p-2 border border-black">
                   <div className="flex items-center justify-center gap-3">
                     <button
@@ -140,6 +140,7 @@ export const PaisTable: React.FC<PaisTableProps> = ({ onUpdate, onDelete }) => {
                     >
                       <Pencil size={18} />
                     </button>
+
                     <button
                       onClick={() => onDelete(item.id)}
                       className="p-2 rounded border border-black text-black hover:bg-black hover:text-white transition"

@@ -50,7 +50,7 @@ export async function deleteCidade(id: number) {
   });
 
   if (!response.ok) {
-    throw new Error(`Erro ao deletar cidade com ID ${id}`);
+    throw new Error(`Failed to delete city with ID ${id}`);
   }
 
   return response.json();
@@ -64,8 +64,8 @@ export async function updateCidade(id: number, cidade: CidadeUpdateForm) {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Erro ao atualizar cidade");
+    const errorData = await response.json().catch(() => null);
+    throw new Error(errorData?.message || "Failed to update city");
   }
 
   return response.json();
@@ -76,7 +76,7 @@ import type { Pais } from "../../types/paisTypes";
 export async function getCidadeById(id: number): Promise<Cidade> {
   try {
     const response = await fetch(`http://localhost:3000/cidade/${id}`);
-    if (!response.ok) throw new Error("Erro ao buscar cidade");
+    if (!response.ok) throw new Error("Failed to fetch city");
 
     const data = await response.json();
 
@@ -108,6 +108,11 @@ export async function getCidadeById(id: number): Promise<Cidade> {
 
 export async function getCidadeCount() {
   const res = await fetch(`http://localhost:3000/cidades/count`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch city count");
+  }
+
   const data = await res.json();
   return data.total;
 }
