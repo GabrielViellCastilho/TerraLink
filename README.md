@@ -21,18 +21,18 @@ informações externas das APIs World Bank e REST Countries.
 ### Frontend
 
 -   React + TypeScript
--   Vite\
+-   Vite
 -   Axios
 
 ### APIs Externas
 
--   World Bank API
--   REST Countries API
+-   World Bank API (Pib per Capita, Inflação do Ano de 2024)
+-   REST Countries API (Nome, Continente, Idioma, População, Moeda, Bandeira)
 
 ## Informações Importantes
 
 -   Ao executar o projeto pela primeira vez, o banco de dados estará
-    vazio.\
+    vazio.
     Os continentes, países e cidades devem ser cadastrados manualmente
     através da aplicação.
 
@@ -42,11 +42,16 @@ informações externas das APIs World Bank e REST Countries.
 
 -   Alguns campos retornados pela API World Bank, como **GDP per
     Capita** e **Inflation (%)**, podem não estar disponíveis para todos
-    os países.\
+    os países.
     Esses campos **não são obrigatórios**.
 
 -   Algumas requisições às APIs externas (principalmente a do World
     Bank) podem demorar alguns segundos.
+
+-   Caso o continente do país informado **não exista**, ele será criado automaticamente
+    no banco.
+
+-   A exclusão possui **efeito cascata**: deletar um continente também remove seus países e cidades atreladas (e o mesmo vale para países → cidades).
 
 ## Banco de Dados
 
@@ -54,6 +59,10 @@ informações externas das APIs World Bank e REST Countries.
 
 O arquivo `.env.template` já está pré-configurado. Basta renomear para
 `.env` e executar o Docker Compose.
+
+``` bash
+mv .env.template .env
+```
 
 ``` bash
 docker compose up -d
@@ -117,5 +126,8 @@ npm run dev
 
 ### Backend Preview
 
+![Backend](./images/backend.png)
 
 ### Frontend Preview
+
+![Frontend](./images/frontend.gif)
