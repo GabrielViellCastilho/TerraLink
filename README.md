@@ -8,6 +8,11 @@ dividida entre um backend em Express e um frontend em React. O sistema
 permite gerenciar continentes, países e cidades, além de integrar
 informações externas das APIs World Bank e REST Countries.
 
+## Requisitos
+- Node.js 22+ (já inclui npm)
+- PostgreSQL (local ou via Docker Compose)
+- Docker (opcional)
+
 ## Tecnologias Utilizadas
 
 ### Backend
@@ -26,7 +31,7 @@ informações externas das APIs World Bank e REST Countries.
 
 ### APIs Externas
 
--   World Bank API (Pib per Capita, Inflação do Ano de 2024)
+-   World Bank API (PIB per Capita, Inflação Anual (2024))
 -   REST Countries API (Nome, Continente, Idioma, População, Moeda, Bandeira)
 
 ## Informações Importantes
@@ -91,7 +96,7 @@ npm install
 mv .env.template .env
 ```
 
-Configurar o `.env` caso não utilize Docker Compose.
+Se não estiver usando Docker Compose, configure o `.env` com seu PostgreSQL local.
 
 Rodar o Prisma:
 
