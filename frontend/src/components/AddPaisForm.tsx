@@ -106,6 +106,7 @@ export default function CreatePaisForm() {
       reset();
       setFlagPreview(null);
       setFormErrors({});
+      window.location.reload();
     } catch (err: any) {
       console.error(err);
       toast.error(err?.message || "Failed to create country.");
