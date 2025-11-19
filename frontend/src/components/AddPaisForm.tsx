@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { getCountryData } from "../api/externalAPI/worldBank";
 import { createPais } from "../api/internalAPI/pais";
 import { getOrCreateContinentId } from "../api/internalAPI/continente";
+import { toast } from "react-toastify";
 
 export type CreatePaisDTO = {
   nome: string;
@@ -26,7 +27,7 @@ export default function CreatePaisForm() {
 
   const nomePais = watch("nome");
 
-  // Fetch country
+  // Fetch country data
   const fetchCountryData = async (nome: string) => {
     if (!nome) return;
 
@@ -84,7 +85,9 @@ export default function CreatePaisForm() {
     }
 
     try {
-      const continentId = await getOrCreateContinentId(data.continente_nome || "");
+      const continentId = await getOrCreateContinentId(
+        data.continente_nome || ""
+      );
 
       const dto: CreatePaisDTO = {
         nome: data.nome,
@@ -99,13 +102,13 @@ export default function CreatePaisForm() {
 
       await createPais(dto);
 
-      alert("Country created successfully!");
+      toast.success("Country created successfully!");
       reset();
       setFlagPreview(null);
       setFormErrors({});
     } catch (err: any) {
       console.error(err);
-      alert(err?.message || "Failed to create country.");
+      toast.error(err?.message || "Failed to create country.");
     }
   };
 
@@ -137,7 +140,9 @@ export default function CreatePaisForm() {
           </button>
         </div>
         {(countryError || formErrors.nome) && (
-          <p className="text-red-600 text-sm">{countryError || formErrors.nome}</p>
+          <p className="text-red-600 text-sm">
+            {countryError || formErrors.nome}
+          </p>
         )}
       </div>
 
@@ -151,6 +156,19 @@ export default function CreatePaisForm() {
           />
         </div>
       )}
+
+      {/* Continent Name */}
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold text-sm text-black">Continent</label>
+        <input
+          {...register("continente_nome")}
+          className="w-full p-2.5 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-black focus:ring-1 focus:ring-black transition"
+          placeholder="Enter continent"
+        />
+        {formErrors.id_continente && (
+          <p className="text-red-600 text-sm">{formErrors.id_continente}</p>
+        )}
+      </div>
 
       {/* Official Language */}
       <div className="flex flex-col space-y-1">
