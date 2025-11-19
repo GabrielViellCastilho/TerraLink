@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { updateContinente } from "../api/internalAPI/continente";
+import { toast } from "react-toastify";
 
 interface UpdateContinenteFormProps {
   continente: {
@@ -21,10 +22,10 @@ export default function UpdateContinenteForm({ continente, onUpdated }: UpdateCo
   async function onSubmit(data: any) {
     try {
       await updateContinente(continente.id, data);
-      alert("Continent updated successfully!");
+      toast.success("Continent updated successfully!");
       onUpdated();
     } catch (error) {
-      alert("Error updating continent");
+      toast.error("Error updating continent");
     }
   }
 

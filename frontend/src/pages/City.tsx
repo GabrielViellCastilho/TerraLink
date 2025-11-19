@@ -4,6 +4,8 @@ import { getAllPaises } from "../api/internalAPI/pais";
 import { getAllContinentes } from "../api/internalAPI/continente";
 import { CityTable } from "../components/CidadesTable";
 import Sidebar from "../components/Sidebar";
+import { toast } from "react-toastify";
+import { ShowConfirmToast } from "../components/ShowConfirmToast";
 
 interface PaisOption {
   id: number;
@@ -66,7 +68,7 @@ export default function City() {
       });
     } catch (err) {
       console.error(err);
-      alert("Error loading city data.");
+      toast.error("Error loading city data.");
     }
   };
 
@@ -76,24 +78,24 @@ export default function City() {
 
     try {
       await updateCidade(currentId, formData); 
-      alert("City updated successfully!");
+      toast.success("City updated successfully!");
       setIsModalOpen(false);
       window.location.reload();
     } catch (err) {
       console.error(err);
-      alert("Failed to update city.");
+      toast.error("Failed to update city.");
     }
   };
 
   const handleDelete = (id: number) => {
-    if (!confirm("Are you sure you want to delete this city?")) return;
-
-    deleteCidade(id)
-      .then(() => {
-        alert("City deleted successfully!");
-        window.location.reload();
-      })
-      .catch((err) => console.error(err));
+    ShowConfirmToast("Are you sure you want to delete this city?", () => {
+      deleteCidade(id)
+        .then(() => {
+          toast.success("City deleted successfully!");
+          window.location.reload();
+        })
+        .catch((err) => console.error(err));
+    });
   };
 
   return (

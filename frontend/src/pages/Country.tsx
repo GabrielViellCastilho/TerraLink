@@ -3,6 +3,8 @@ import { deletePais, updatePais, getPaisById } from "../api/internalAPI/pais";
 import { getAllContinentes } from "../api/internalAPI/continente";
 import { PaisTable } from "../components/PaisTable";
 import Sidebar from "../components/Sidebar";
+import { toast } from "react-toastify";
+import { ShowConfirmToast } from "../components/ShowConfirmToast";
 
 interface ContinenteOption {
   id: number;
@@ -56,7 +58,7 @@ export default function Country() {
       });
     } catch (err) {
       console.error("Failed to load country:", err);
-      alert("Error loading country data.");
+      toast.error("Error loading country data.");
     }
   };
 
@@ -67,26 +69,27 @@ export default function Country() {
 
     try {
       await updatePais(currentId, formData);
-      alert("Country updated successfully!");
+      toast.success("Country updated successfully!");
       setIsModalOpen(false);
       window.location.reload();
     } catch (err) {
       console.error("Error updating country:", err);
-      alert("Failed to update country.");
+      toast.error("Failed to update country.");
     }
   };
 
   // Delete country
   const handleDelete = (id: number) => {
-    if (!confirm("Are you sure you want to delete this country?")) return;
+    ShowConfirmToast("Are you sure you want to delete this country?", () => {
 
     deletePais(id)
       .then(() => {
-        alert("Country deleted successfully!");
+        toast.success("Country deleted successfully!");
         window.location.reload();
       })
       .catch((err) => console.error("Error deleting country:", err));
-  };
+  })
+};
 
   return (
     <div>

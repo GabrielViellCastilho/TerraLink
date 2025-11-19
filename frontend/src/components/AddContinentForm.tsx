@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { CreateContinenteDTO } from "../types/continenteTypes";
 import { CreateContinenteSchema } from "../schemas/continenteSchema";
 import { createContinente } from "../api/internalAPI/continente";
+import { toast } from "react-toastify";
 
 export default function CreateContinenteForm() {
   const {
@@ -21,10 +22,10 @@ export default function CreateContinenteForm() {
         paises: [],
       });
 
-      alert("Continent created successfully!");
+      toast.success("Continent created successfully!");
       reset();
     } catch (err) {
-      alert("Failed to create continent.");
+      toast.error("Failed to create continent.");
     }
   };
 

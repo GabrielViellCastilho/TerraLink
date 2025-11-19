@@ -2,6 +2,8 @@ import { useState } from "react";
 import { deleteContinente, updateContinente, getContinenteById } from "../api/internalAPI/continente";
 import { ContinenteTable } from "../components/ContinenteTable";
 import Sidebar from "../components/Sidebar";
+import { toast } from "react-toastify";
+import { ShowConfirmToast } from "../components/ShowConfirmToast";
 
 export default function Continent() {
 
@@ -24,7 +26,7 @@ export default function Continent() {
       });
     } catch (err) {
       console.error(err);
-      alert("Error loading continent data.");
+      toast.error("Error loading continent data.");
     }
   }
 
@@ -34,25 +36,25 @@ export default function Continent() {
 
     try {
       await updateContinente(currentId, formData);
-      alert("Continent updated successfully!");
+      toast.success("Continent updated successfully!");
       window.location.reload();
     } catch (err) {
       console.error(err);
-      alert("Failed to update continent.");
+      toast.error("Failed to update continent.");
     }
   }
 
   function handleDelete(id: number) {
-    if (!confirm("Are you sure you want to delete this continent?")) return;
+    ShowConfirmToast("Are you sure you want to delete this continent?", () => {
 
     deleteContinente(id)
       .then(() => {
-        alert("Continent deleted successfully!");
+        toast.success("Continent deleted successfully!");
         window.location.reload();
       })
       .catch((err) => console.error(err));
+    });
   }
-
   return (
     <div>
       <Sidebar>

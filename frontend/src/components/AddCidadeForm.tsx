@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createCidade } from "../api/internalAPI/cidade";
 import { getAllPaises } from "../api/internalAPI/pais";
+import { toast } from "react-toastify";
 
 export default function CreateCidadeForm() {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ export default function CreateCidadeForm() {
   useEffect(() => {
     getAllPaises(1, 100)
       .then(res => setPaises(res.data))
-      .catch(err => console.error("Error fetching countries:", err));
+      .catch(err => toast.error("Error fetching countries:", err));
   }, []);
 
   const validate = () => {
@@ -38,11 +39,11 @@ export default function CreateCidadeForm() {
     setIsSubmitting(true);
     try {
       await createCidade(formData);
-      alert("City created successfully!");
+      toast.success("City created successfully!");
       setFormData({ nome: "", populacao: 0, latitude: 0, longitude: 0, id_pais: 0 });
       setErrors({});
     } catch (err: any) {
-      alert("Failed to create city: " + err.message);
+      toast.error("Failed to create city: " + err.message);
     } finally {
       setIsSubmitting(false);
     }
